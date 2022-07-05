@@ -1,0 +1,241 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Google Calendar API in Python"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Installation"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "pip install google-api-python-client"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Setup"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from google.oauth2 import service_account\n",
+    "from googleapiclient.discovery import build\n",
+    "from datetime import datetime, timedelta"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "SCOPES = ['https://www.googleapis.com/auth/calendar']\n",
+    "SERVICE_ACCOUNT_FILE = 'service-account.json' # You should make it an environment variable\n",
+    "SUBJECT = 'user-1@company.com'"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)\n",
+    "delegated_credentials = credentials.with_subject(SUBJECT) "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Get A User Calendar Events"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "now = datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "events = service.events().list(calendarId=SUBJECT,timeMin=now,maxResults=10,orderBy='startTime',singleEvents=True).execute()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "events"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Create a New Calandar Event"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "event = service.events().get(calendarId=SUBJECT,eventId='rgqkf7v411tceq4dvqp8j8r0fk').execute()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "event"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Delete an Event from a Calandar"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "event =  service.events().delete(calendarId=SUBJECT,eventId='rgqkf7v411tceq4dvqp8j8r0fk').execute()"
+
+   ]
+
+  },
+
+  {
+
+   "cell_type": "markdown",
+
+   "metadata": {},
+
+   "source": [
+
+    "## Create an Event into a Calandar"
+
+   ]
+
+  },
+
+  {
+
+   "cell_type": "code",
+
+   "execution_count": null,
+
+   "metadata": {},
+
+   "outputs": [],
+
+   "source": [
+
+    "d = datetime.utcnow().date()\n",
+
+    "tomorrow = datetime(d.year, d.month, d.day, 10)+timedelta(days=1)\n",
+
+    "start = tomorrow.isoformat()\n",
+
+    "end = (tomorrow + timedelta(hours=1)).isoformat()\n",
+
+    "body={\"summary\": 'Hello there, Automating calendar', \n",
+
+    "      \"description\": 'Google calendar with python',\n",
+
+    "      \"start\": {\"dateTime\": start, \"timeZone\": 'Asia/Karachi'}, \n",
+
+    "      \"end\": {\"dateTime\": end, \"timeZone\": 'Asia/Karachi'},\n",
+
+    "     }"
+
+   ]
+
+  },
+
+  {
+
+   "cell_type": "code",
+
+   "execution_count": null,
+
+   "metadata": {},
+
+   "outputs": [],
+
+   "source": [
+
+    "event = service.events().insert(calendarId=SUBJECT,body=body).execute()"
+
+   ]
+
+  },
+
+  {
+
+   "cell_type": "code",
+
+   "execution_count": null,
+
+   "metadata": {},
+
+   "outputs": [],
+
+   "source": [
+
+    "event"
+
+   ]
+
+  },
+
+  {
+
+   "cell_type": "code",
+
+   "execution_count": null,
+
+   "metadata": {},
+
+   "outputs": [],
+
+   "source": []
+
+  }
+
+ ],
